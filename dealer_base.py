@@ -8,6 +8,8 @@ class DealerBase(object):
         # 交易经纪佣金
         self.commission_rate = 0.25 / 100
         self.commission_min = 100.0
+        # 平台使用费
+        self.platform_fee = 0.0
         # 印花税率, 印花税不足一元作一元计
         self.stamp_rate = 0.1 / 100
         # 交易证收费
@@ -60,9 +62,10 @@ class DealerBase(object):
 
     def _trade_fee(self, action):
         amount = action.quantity * action.unit_price
+        platform_fee = self.platform_fee
         commission = round(max(amount * self.commission_rate, self.commission_min), 2)
         stamp = math.ceil(amount * self.stamp_rate)
         SFC_levy = round(amount * self.SFC_levy_rate, 2)
         trading_fee = round(amount * self.trading_fee_rate, 2)
         clearing_fee = round(min(self.clearing_fee_max, max(self.clearing_fee_min, amount * self.clearing_fee_rate)), 2)
-        return commission + stamp + SFC_levy + trading_fee + clearing_fee
+        return platform_fee + commission + stamp + SFC_levy + trading_fee + clearing_fee
