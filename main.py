@@ -6,6 +6,8 @@ import logging
 dealer_map = {
     "华泰": Huatai(),
     "招证": Marchants(),
+    "长桥": LongBridge(),
+    "广发": GFHK(),
 }
 
 account_map = {account.name: account for account in [
